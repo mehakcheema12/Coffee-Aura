@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Aura | Floating Coffee Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <style>
+        /* ===== Global Styles ===== */
+        :root {
+            /* Light Mode Colors */
+            --primary-dark: #3E2723;
+            --primary-medium: #5D4037;
+            --primary-light: #8D6E63;
+            --secondary-light: #D7CCC8;
+            --secondary-lighter: #EFEBE9;
+            --accent: #BCAAA4;
+            --text-dark: #3E2723;
+            --text-medium: #5D4037;
+            --text-light: #8D6E63;
+            --bg-cream: #F9F5F0;
+            --bg-latte: #FFF8F0;
+            --white: #FFFFFF;
+            --black: #212121;
+            
+            /* Glass Effects */
+            --glass-light: rgba(255, 255, 255, 0.2);
+            --glass-dark: rgba(0, 0, 0, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            
+            /* Transitions */
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* Dark Mode Colors */
+        [data-theme="dark"] {
+            --primary-dark: #EFEBE9;
+            --primary-medium: #D7CCC8;
+            --primary-light: #8D6E63;
+            --secondary-light: #5D4037;
+            --secondary-lighter: #3E2723;
+            --accent: #BCAAA4;
+            --text-dark: #EFEBE9;
+            --text-medium: #D7CCC8;
+            --text-light: #8D6E63;
+            --bg-cream: #1E1E1E;
+            --bg-latte: #2D2D2D;
+            --white: #121212;
+            --black: #EFEBE9;
+            
+            --glass-light: rgba(30, 30, 30, 0.3);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-medium);
+            background-color: var(--bg-cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background-color: var(--accent);
+            margin: 1rem auto 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-medium);
+            color: var(--secondary-lighter);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-medium);
+            border: 1px solid var(--primary-medium);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-medium);
+            color: var(--secondary-lighter);
+            transform: translateY(-2px);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== Glass Morphism Styles ===== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            z-index: -1;
+            border-radius: 16px;
+        }
+
+        /* Flip Card Styles - Fixed */
+        .flip-card {
+            perspective: 1000px;
+            height: 350px;
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            /* No glass-card properties here */
+        }
+
+        /* FIX: Rotate the inner card on hover */
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Crucial for hiding the back face */
+            border-radius: 16px; /* Apply border-radius here */
+            overflow: hidden; /* Apply overflow here */
+
+            /* Apply glass-card specific styles directly to faces */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        /* Add the ::before pseudo-element to the front and back directly */
+        .flip-card-front::before, .flip-card-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            z-index: -1;
+            border-radius: 16px;
+        }
+
+        /* Front of card - just name and image */
+        .flip-card-front {
+            transform: rotateY(0deg); /* Ensures the front face is initially facing forward */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flip-card-front .type-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .flip-card-front .type-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .flip-card:hover .flip-card-front .type-img img {
+            transform: scale(1.05);
+        }
+
+        .flip-card-front .type-content {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .flip-card-front .type-content p {
+            display: none;
+        }
+
+        /* Back of card - details */
+        .flip-card-back {
+            /* Initially rotated 180deg to be hidden, then appears correctly */
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(62, 39, 35, 0.7), rgba(93, 64, 55, 0.7));
+            color: var(--secondary-lighter);
+        }
+
+        /* Weather Suggestion Styles */
+        .weather-suggestion {
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .weather-text {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .suggested-coffee {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 1rem;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 3rem auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--accent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 10px;
+        }
+
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12px;
+            background-color: var(--bg-cream);
+            border: 4px solid var(--accent);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid var(--accent);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--accent);
+        }
+
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid var(--accent);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--accent) transparent transparent;
+        }
+
+        .right::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            position: relative;
+            border-radius: 6px;
+        }
+
+        /* Carousel Styles */
+        .fun-facts-carousel {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .swiper-pagination-bullet {
+            background: var(--text-light);
+            opacity: 0.5;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--accent);
+            opacity: 1;
+        }
+
+        /* Caffeine Calculator Styles */
+        .caffeine-calculator {
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--secondary-light);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .calculator-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(188, 170, 164, 0.2);
+            display: none;
+        }
+
+        .calculator-result.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        .result-message {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* ===== Header & Navbar ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px 0;
+            background: rgba(249, 245, 240, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(30, 30, 30, 0.8);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            color: var(--primary-dark);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            background: none;
+            border: none;
+            transition: var(--transition);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(62, 39, 35, 0.2), rgba(62, 39, 35, 0.2)), 
+                        url('hero.jpg') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--secondary-lighter);
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 3rem;
+            background: rgba(62, 39, 35, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-lighter);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero .btn {
+            font-size: 0.9rem;
+            padding: 14px 28px;
+            backdrop-filter: blur(5px);
+        }
+
+        .hero .btn-primary {
+            background-color: rgba(188, 170, 164, 0.8);
+            color: var(--primary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero .btn-primary:hover {
+            background-color: rgba(239, 235, 233, 0.9);
+        }
+
+        .hero .btn-outline {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary-lighter);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: var(--primary-dark);
+        }
+
+        /* ===== Coffee Origins ===== */
+        .origins {
+            background-color: var(--bg-latte);
+        }
+
+        .origins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            /* FIX FOR ALIGNMENT */
+            justify-items: center; /* Centers items within their grid cells */
+            justify-content: center; /* Centers the entire grid content if it doesn't fill the container */
+        }
+
+        .origin-card {
+            transition: var(--transition);
+        }
+
+        .origin-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .origin-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .origin-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .origin-card:hover .origin-img img {
+            transform: scale(1.05);
+        }
+
+        .origin-content {
+            padding: 1.5rem;
+        }
+
+        .origin-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .origin-country {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .origin-country i {
+            color: var(--accent);
+        }
+
+        .origin-taste {
+            margin-top: 1rem;
+        }
+
+        .origin-taste h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-light);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .taste-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .taste-tag {
+            background-color: rgba(215, 204, 200, 0.5);
+            color: var(--text-medium);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ===== Coffee Benefits ===== */
+        .benefits {
+            background-color: var(--bg-cream);
+        }
+
+        .benefits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-card {
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(215, 204, 200, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary-medium);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .benefit-card:hover .benefit-icon {
+            background-color: rgba(188, 170, 164, 0.7);
+            color: var(--primary-dark);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ===== Coffee Types ===== */
+        .coffee-types {
+            background-color: var(--bg-latte);
+        }
+
+        .types-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .type-card {
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .type-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .type-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .type-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .type-card:hover .type-img img {
+            transform: scale(1.05);
+        }
+
+        .type-content {
+            padding: 1.5rem;
+        }
+
+        .type-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-content p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ===== Coffee Chemistry ===== */
+        .chemistry {
+            background-color: var(--bg-cream);
+        }
+
+        .chemistry-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .chemistry-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .chemistry-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .chemistry-text p {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .chemistry-text ul {
+            margin-bottom: 1.5rem;
+        }
+
+        .chemistry-text li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .chemistry-visual {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .molecule {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass-light);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* ===== Caffeine Knowledge ===== */
+        .caffeine {
+            background-color: var(--bg-latte);
+        }
+
+        .caffeine-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .caffeine-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .caffeine-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .caffeine-text p {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .caffeine-facts {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .fact-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(215, 204, 200, 0.5);
+        }
+
+        .fact-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .fact-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .fact-item p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .quiz-btn {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* ===== Coffee Quotes ===== */
+        .quotes {
+            background-color: var(--primary-dark);
+            color: var(--secondary-lighter);
+            padding: 100px 0;
+        }
+
+        .quotes .section-title {
+            color: var(--secondary-lighter);
+        }
+
+        .quotes .section-title::after {
+            background-color: var(--accent);
+        }
+
+        .quote-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .quote-slide {
+            display: none;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .quote-slide.active {
+            display: block;
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--secondary-light);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            opacity: 1;
+            background-color: var(--accent);
+        }
+
+        /* ===== Mood & Brew Match ===== */
+        .mood-match {
+            background-color: var(--bg-cream);
+        }
+
+        .moods-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .mood-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--glass-border);
+            font-size: 0.9rem;
+            background: var(--glass-light);
+            backdrop-filter: blur(5px);
+        }
+
+        .mood-btn:hover {
+            background-color: rgba(141, 110, 99, 0.3);
+            color: var(--secondary-lighter);
+        }
+
+        .mood-btn.active {
+            background-color: rgba(93, 64, 55, 0.7);
+            color: var(--secondary-lighter);
+            border-color: var(--primary-medium);
+        }
+
+        .match-result {
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            display: none;
+            transition: var(--transition);
+        }
+
+        .match-result.active {
+            display: block;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .match-coffee {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .match-quote {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .match-song {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .match-song i {
+            color: var(--accent);
+        }
+
+        /* ===== Brew Methods ===== */
+        .brew-methods {
+            background-color: var(--bg-latte);
+        }
+
+        .methods-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .method-card {
+            transition: var(--transition);
+        }
+
+        .method-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .method-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .method-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .method-card:hover .method-img img {
+            transform: scale(1.05);
+        }
+
+        .method-content {
+            padding: 1.5rem;
+        }
+
+        .method-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .method-details {
+            margin: 1rem 0;
+        }
+
+        .method-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .method-detail i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+            width: 20px;
+            text-align: center;
+        }
+
+        .method-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--accent);
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .method-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        .method-btn i {
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .method-btn:hover i {
+            transform: translateX(3px);
+        }
+/* Weather Suggestion - Enhanced */
+.weather-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.weather-temp {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.weather-icon {
+    font-size: 3rem;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Mood & Brew - Expanded */
+.moods-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.mood-btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+    background: var(--glass-light);
+    backdrop-filter: blur(5px);
+    min-width: 120px;
+    text-align: center;
+}
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            animation: modalFadeIn 0.4s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        [data-theme="dark"] .modal-content {
+            background: rgba(30, 30, 30, 0.9);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .modal-img {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .modal-img img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .modal-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .modal-text h4 {
+            margin: 1.5rem 0 0.5rem;
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+        }
+
+        .modal-steps {
+            margin-top: 1rem;
+        }
+
+        .modal-step {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .step-number {
+            background-color: var(--accent);
+            color: var(--secondary-lighter);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+    /* --- Coffee Menu Section Styles --- */
+
+/* Basic body styles for overall look if not already defined elsewhere */
+body {
+    /* Example: adjust as needed if you have existing body styles */
+    /* font-family: 'Open Sans', sans-serif; */
+    /* background-color: #f8f5f0; */
+    /* color: #333; */
+    /* line-height: 1.6; */
+}
+
+/* Section Styling */
+.coffee-menu-section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    /* Optional: Add a top margin if this section immediately follows another */
+    /* margin-top: 50px; */
+}
+
+.section-title {
+    /* Example font, adjust if you have a specific font in your project or want to import one */
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 3em;
+    color: #5a4b41; /* Darker brown for title */
+    margin-bottom: 60px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #c9a47c; /* Accent color */
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+/* Menu Items Grid */
+.menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 40px;
+    justify-content: center;
+    align-items: start; /* Align items to the top */
+}
+
+.menu-item {
+    display: flex;
+    align-items: center; /* Vertically align image and text */
+    text-align: left; /* Align text within item */
+    background-color: #ffffff; /* White background for each item */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.item-image {
+    flex-shrink: 0; /* Prevent image from shrinking */
+    width: 80px; /* Adjust size of your cup image container */
+    height: 80px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensure image fits without distortion */
+}
+
+.item-details {
+    flex-grow: 1; /* Allow details to take remaining space */
+}
+
+.item-name {
+    /* font-family: 'Playfair Display', serif; */ /* Example font */
+    font-size: 1.5em;
+    color: #4a3e36; /* Slightly darker brown for name */
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.item-description {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 0;
+}
+    
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .menu-items-grid {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
+    }
+
+    .section-title {
+        font-size: 2.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 2em;
+    }
+
+    .menu-item {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center;
+    }
+
+    .item-image {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+
+        /* ===== Link Café ===== */
+        .link-cafe {
+            background-color: var(--bg-cream);
+        }
+
+        .links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .link-card {
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .link-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .link-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .link-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .link-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: var(--primary-light);
+            color: var(--secondary-lighter);
+            border-radius: 50px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .link-btn:hover {
+            background-color: var(--primary-medium);
+            transform: translateY(-2px);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--secondary-lighter);
+            padding: 60px 0 30px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-lighter);
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+            color: var(--primary-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+            color: var(--secondary-lighter);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--bg-white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--primary-light);
+        }
+
+        .footer-bottom i {
+            color: var(--accent);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-medium);
+            color: var(--secondary-lighter);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-medium);
+            color: var(--secondary-lighter);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+.section-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center; /* This centers the text within the h2 */
+    position: relative;
+    /* Keep it as a block element by default */
+    display: block;
+    /* Add margin auto to center the block itself */
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content; /* This makes the block only as wide as its content */
+    max-width: 90%; /* Prevent it from being too wide on smaller screens */
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: var(--accent);
+    margin: 1rem auto 0; /* This centers the underline */
+}
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Responsive Styles ===== */
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid var(--accent);
+                border-width: 10px 10px 10px 0;
+                border-color: transparent var(--accent) transparent transparent;
+            }
+
+            .left::after, .right::after {
+                left: 15px;
+            }
+
+            .right {
+                left: 0%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background: var(--bg-white);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                transition: var(--transition);
+            }
+            
+            [data-theme="dark"] .nav-links {
+                background: var(--bg-cream);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .chemistry-content,
+            .caffeine-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .quote-text {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section {
+                padding: 50px 0;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .origin-card,
+            .method-card {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+            
+            .modal-body {
+                flex-direction: column;
+            }
+            
+            .modal-img,
+            .modal-text {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar container">
+            <a href="#" class="logo">
+                <i class="fas fa-mug-hot"></i>
+                <span>Coffee Aura</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#origins">Origins</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#types">Types</a></li>
+                <li><a href="#chemistry">Science</a></li>
+                <li><a href="#brew">Brew</a></li>
+            </ul>
+            
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content glass-card">
+            <h1>Coffee Aura</h1>
+            
+            <p>  Feed your soul with coffee.
+            </p>
+        
+            
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Coffee Fun Facts</h2>
+            <p class="text-center">Discover interesting trivia about your favorite beverage</p>
+            
+            <div class="fun-facts-carousel glass-card">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <p>"Coffee was discovered by a goat herder in Ethiopia who noticed his goats became energetic after eating coffee berries."</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"Finland consumes the most coffee per capita, with the average Finn drinking about 4 cups a day."</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"Espresso means 'pressed out' in Italian, referring to how the coffee is made by forcing hot water through finely-ground coffee under pressure."</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"The world's most expensive coffee is Kopi Luwak, made from beans eaten and excreted by civet cats."</p>
+                        </div>
+                        <div class="swiper-slide">
+                            <p>"Brazil is the world's largest coffee producer, growing about a third of the world's supply."</p>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section origins" id="origins">
+        <div class="container">
+            <h2 class="section-title">Coffee Origins</h2>
+            <p class="text-center">Discover the diverse flavors from coffee's birthplace to your cup</p>
+            
+            <div class="origins-grid">
+                <div class="origin-card glass-card">
+                    <div class="origin-img">
+                        <img src="yirg.jpg" alt="Ethiopian coffee">
+                    </div>
+                    <div class="origin-content">
+                        <h3>Yirgacheffe</h3>
+                        <div class="origin-country">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Ethiopia</span>
+                        </div>
+                        <p>The birthplace of coffee, known for its floral and fruity notes with a light body.</p>
+                        
+                        <div class="origin-taste">
+                            <h4>Taste Profile</h4>
+                            <div class="taste-tags">
+                                <span class="taste-tag">Floral</span>
+                                <span class="taste-tag">Berry</span>
+                                <span class="taste-tag">Citrus</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="origin-card glass-card">
+                    <div class="origin-img">
+                        <img src="nyeri.jpeg" alt="Kenyan coffee">
+                    </div>
+                    <div class="origin-content">
+                        <h3>Nyeri</h3>
+                        <div class="origin-country">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Kenya</span>
+                        </div>
+                        <p>Kenyan coffees are renowned for their bright acidity, full body, and distinctive berry and citrus notes.</p>
+                        
+                        <div class="origin-taste">
+                            <h4>Taste Profile</h4>
+                            <div class="taste-tags">
+                                <span class="taste-tag">Berry</span>
+                                <span class="taste-tag">Citrus</span>
+                                <span class="taste-tag">Wine-like</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="origin-card glass-card">
+                    <div class="origin-img">
+                        <img src="huila.jpeg" alt="Colombian coffee">
+                    </div>
+                    <div class="origin-content">
+                        <h3>Huila</h3>
+                        <div class="origin-country">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Colombia</span>
+                        </div>
+                        <p>Colombian coffee is celebrated for its balanced flavor, medium body, and nutty sweetness.</p>
+                        
+                        <div class="origin-taste">
+                            <h4>Taste Profile</h4>
+                            <div class="taste-tags">
+                                <span class="taste-tag">Nutty</span>
+                                <span class="taste-tag">Caramel</span>
+                                <span class="taste-tag">Chocolate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="origin-card glass-card">
+                    <div class="origin-img">
+                        <img src="santoss.png" alt="Brazilian coffee">
+                    </div>
+                    <div class="origin-content">
+                        <h3>Santos</h3>
+                        <div class="origin-country">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Brazil</span>
+                        </div>
+                        <p>Brazil produces about a third of the world's coffee, known for its chocolatey and nutty flavors.</p>
+                        
+                        <div class="origin-taste">
+                            <h4>Taste Profile</h4>
+                            <div class="taste-tags">
+                                <span class="taste-tag">Chocolate</span>
+                                <span class="taste-tag">Nutty</span>
+                                <span class="taste-tag">Full Body</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section benefits" id="benefits">
+        <div class="container">
+            <h2 class="section-title">Coffee Benefits</h2>
+            <p class="text-center">Beyond the delicious taste, coffee offers remarkable benefits</p>
+            
+            <div class="benefits-container">
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Energy Boost</h3>
+                    <p>Caffeine blocks adenosine receptors, reducing fatigue and increasing alertness.</p>
+                </div>
+                
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Rich in Antioxidants</h3>
+                    <p>Coffee is packed with polyphenols that combat free radicals in your body.</p>
+                </div>
+                
+                <div class="benefit-card glass-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Brain Health</h3>
+                    <p>May lower risk of neurodegenerative diseases like Alzheimer's and Parkinson's.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section coffee-types" id="types">
+    <div class="container">
+        <h2 class="section-title">Coffee Types</h2>
+        <p class="text-center">From espresso to cold brew, discover the variety of coffee drinks</p>
+        
+        <div class="types-container">
+            <div class="flip-card">
+                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                            <img src="espresso.jpeg" alt="Espresso">
+                        </div>
+                        <div class="type-content">
+                            <h3>Espresso</h3>
+                        </div>
+                    </div>
+                    <div class="flip-card-back glass-card"> <h3>Espresso Details</h3>
+                        <p><strong>Origin:</strong> Italy</p>
+                        <p><strong>Caffeine:</strong> 63mg per shot</p>
+                        <p><strong>Best Time:</strong> Morning or after meals</p>
+                        <p><strong>Flavor:</strong> Strong, rich, and full-bodied</p>
+                        <p><strong>Description:</strong> Concentrated coffee brewed by forcing hot water through finely-ground coffee under pressure.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card">
+                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                            <img src="latte.jpeg" alt="Latte">
+                        </div>
+                        <div class="type-content">
+                            <h3>Latte</h3>
+                        </div>
+                    </div>
+                    <div class="flip-card-back glass-card"> <h3>Latte Details</h3>
+                        <p><strong>Origin:</strong> Italy/France</p>
+                        <p><strong>Caffeine:</strong> 63mg per shot</p>
+                        <p><strong>Best Time:</strong> Morning or afternoon</p>
+                        <p><strong>Flavor:</strong> Creamy, smooth, and mild</p>
+                        <p><strong>Description:</strong> Espresso with steamed milk and a light layer of foam, creating a creamy, mild coffee drink.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+    <div class="flip-card-inner">
+        <div class="flip-card-front glass-card">
+            <div class="type-img">
+                <img src="affogato.jpg" alt="Affogato">
+            </div>
+            <div class="type-content">
+                <h3>Affogato</h3>
+            </div>
+        </div>
+        <div class="flip-card-back glass-card">
+            <h3>Affogato Details</h3>
+            <p><strong>Origin:</strong> Italy</p>
+            <p><strong>Caffeine:</strong> 63mg per shot</p>
+            <p><strong>Best Time:</strong> After dinner</p>
+            <p><strong>Flavor:</strong> Sweet, creamy, with coffee bitterness</p>
+            <p><strong>Description:</strong> A dessert coffee made by pouring a shot of hot espresso over vanilla gelato or ice cream, creating a delicious contrast of temperatures and flavors.</p>
+        </div>
+    </div>
+</div>
+            <div class="flip-card">
+                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                            <img src="cappuccino.jpeg" alt="Cappuccino">
+                        </div>
+                        <div class="type-content">
+                            <h3>Cappuccino</h3>
+                        </div>
+                    </div>
+                    <div class="flip-card-back glass-card"> <h3>Cappuccino Details</h3>
+                        <p><strong>Origin:</strong> Italy</p>
+                        <p><strong>Caffeine:</strong> 63mg per shot</p>
+                        <p><strong>Best Time:</strong> Morning only (Italian tradition)</p>
+                        <p><strong>Flavor:</strong> Balanced, velvety, with rich foam</p>
+                        <p><strong>Description:</strong> Equal parts espresso, steamed milk, and milk foam, creating a layered coffee experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="section chemistry" id="chemistry">
+        <div class="container">
+            <h2 class="section-title">Coffee Science</h2>
+            <p class="text-center">Understanding the chemistry behind your favorite brew</p>
+            
+            <div class="chemistry-content">
+                <div class="chemistry-text glass-card" style="padding: 2rem;">
+                    <h3>Maillard Reaction</h3>
+                    <p>The Maillard reaction occurs when coffee beans are roasted, causing amino acids and reducing sugars to react. This complex series of reactions creates hundreds of flavor and aroma compounds that give coffee its distinctive taste.</p>
+                    
+                    <h3>Aroma Compounds</h3>
+                    <p>Over 800 volatile compounds contribute to coffee's aroma. Key compounds include:</p>
+                    <ul>
+                        <li>Furans: Caramel-like sweetness</li>
+                        <li>Pyrazines: Earthy, nutty aromas</li>
+                        <li>Aldehydes: Fruity, floral notes</li>
+                    </ul>
+                </div>
+                
+                <div class="chemistry-visual">
+                    <div class="molecule glass-card">
+                        <i class="fas fa-atom" style="font-size: 5rem; color: var(--accent);"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section caffeine" id="caffeine">
+        <div class="container">
+            <h2 class="section-title">Caffeine Knowledge</h2>
+            <p class="text-center">Understanding the world's most popular psychoactive substance</p>
+            
+            <div class="caffeine-container">
+                <div class="caffeine-text glass-card" style="padding: 2rem;">
+                    <h3>What is Caffeine?</h3>
+                    <p>Caffeine is a natural stimulant most commonly found in coffee, tea, and cacao plants. It works by stimulating the brain and central nervous system, helping you stay alert and preventing the onset of tiredness.</p>
+                    
+                    <h3>How It Works</h3>
+                    <p>Caffeine's primary mechanism is blocking adenosine receptors in the brain. Adenosine is a neurotransmitter that promotes sleep and relaxation. By blocking these receptors, caffeine increases neural activity.</p>
+                </div>
+                
+                <div class="caffeine-facts glass-card">
+                    <h3>Caffeine Facts</h3>
+                    
+                    <div class="fact-item">
+                        <h3>Half-Life</h3>
+                        <p>Caffeine's half-life is about 5 hours, meaning it takes 5 hours for your body to eliminate half of the caffeine you consumed.</p>
+                    </div>
+                    
+                    <div class="fact-item">
+                        <h3>World Consumption</h3>
+                        <p>Approximately 2.25 billion cups of coffee are consumed worldwide every day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Caffeine Calculator</h2>
+            <p class="text-center">Track how much caffeine is in your system based on your coffee consumption</p>
+            
+            <div class="caffeine-calculator glass-card">
+                <form class="calculator-form">
+                    <div class="form-group">
+                        <label for="cups">Number of cups consumed:</label>
+                        <input type="number" id="cups" min="0" max="10" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Time since last cup (hours):</label>
+                        <input type="number" id="time" min="0" max="24" value="1">
+                    </div>
+                    <button type="button" id="calculate-btn" class="btn btn-primary">Calculate</button>
+                </form>
+                
+                <div class="calculator-result" id="calculator-result">
+                    <h3>Your Caffeine Status</h3>
+                    <div class="result-value" id="result-value">0 mg</div>
+                    <p class="result-message" id="result-message"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Coffee Journey</h2>
+            <p class="text-center">From bean to cup - the fascinating journey of coffee</p>
+            
+            <div class="timeline">
+                <div class="timeline-container left glass-card">
+                    <div class="timeline-content">
+                        <h3>Planting</h3>
+                        <p>Coffee starts as a seed planted in nurseries. After 6-12 months, the seedlings are transplanted to coffee farms.</p>
+                    </div>
+                </div>
+                <div class="timeline-container right glass-card">
+                    <div class="timeline-content">
+                        <h3>Harvesting</h3>
+                        <p>Coffee cherries are hand-picked when ripe, typically 3-4 years after planting. Selective picking ensures only ripe cherries are harvested.</p>
+                    </div>
+                </div>
+                <div class="timeline-container left glass-card">
+                    <div class="timeline-content">
+                        <h3>Processing</h3>
+                        <p>The beans are extracted from the cherries using either dry (natural) or wet (washed) methods, then dried to about 11% moisture content.</p>
+                    </div>
+                </div>
+                <div class="timeline-container right glass-card">
+                    <div class="timeline-content">
+                        <h3>Milling</h3>
+                        <p>The dried beans are hulled, polished, graded, and sorted by size and weight before being exported.</p>
+                    </div>
+                </div>
+                <div class="timeline-container left glass-card">
+                    <div class="timeline-content">
+                        <h3>Roasting</h3>
+                        <p>Green coffee beans are roasted at 200-250°C, developing flavor, aroma, and color through chemical changes.</p>
+                    </div>
+                </div>
+                <div class="timeline-container right glass-card">
+                    <div class="timeline-content">
+                        <h3>Grinding</h3>
+                        <p>Roasted beans are ground to different consistencies based on brewing method - from fine (espresso) to coarse (French press).</p>
+                    </div>
+                </div>
+                <div class="timeline-container left glass-card">
+                    <div class="timeline-content">
+                        <h3>Brewing</h3>
+                        <p>Hot water extracts flavors from ground coffee, with methods ranging from espresso machines to pour-over drippers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Weather Brew</h2>
+            <p class="text-center">Get the perfect coffee recommendation based on your local weather</p>
+            
+            <div class="weather-suggestion glass-card" id="weather-suggestion">
+                <div class="weather-icon" id="weather-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <p class="weather-text" id="weather-text">Allow location access to get a weather-based coffee recommendation</p>
+                <button id="weather-btn" class="btn btn-primary">Check Weather</button>
+                <div class="suggested-coffee" id="suggested-coffee"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section quotes">
+    <div class="container">
+        <h2 class="section-title">Coffee Wisdom</h2>
+        
+        <div class="quote-slider glass-card" style="padding: 2rem;">
+            <div class="quote-slide active">
+                <p class="quote-text">"Coffee is a language in itself."</p>
+                <p class="quote-author">- Jackie Chan</p>
+            </div>
+            
+            <div class="quote-slide">
+                <p class="quote-text">"Way too much coffee. But if it weren't for the coffee, I'd have no identifiable personality whatsoever."</p>
+                <p class="quote-author">- David Letterman</p>
+            </div>
+            
+            <div class="quote-slide">
+                <p class="quote-text">"I orchestrate my mornings to the tune of coffee."</p>
+                <p class="quote-author">- Terri Guillemets</p>
+            </div>
+            
+            <div class="quote-slide">
+                <p class="quote-text">"Coffee is the best thing to douse the sunrise with."</p>
+                <p class="quote-author">- Drew Sirtors</p>
+            </div>
+            
+            <div class="quote-slide">
+                <p class="quote-text">"Behind every successful person is a substantial amount of coffee."</p>
+                <p class="quote-author">- Unknown</p>
+            </div>
+            
+            <div class="quote-slide">
+                <p class="quote-text">"Coffee smells like freshly ground heaven."</p>
+                <p class="quote-author">- Jessi Lane Adams</p>
+            </div>
+            
+            <div class="slider-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+                <div class="dot" data-slide="3"></div>
+                <div class="dot" data-slide="4"></div>
+                <div class="dot" data-slide="5"></div>
+            </div>
+        </div>
+    </div>
+</section>
+   <section class="section mood-match" id="mood">
+    <div class="container">
+        <h2 class="section-title">Mood & Brew</h2>
+        <p class="text-center">Find your perfect coffee based on your current mood</p>
+        
+        <div class="moods-container">
+            <div class="mood-btn" data-mood="chill">Chill</div>
+            <div class="mood-btn" data-mood="focus">Focus</div>
+            <div class="mood-btn" data-mood="energize">Energize</div>
+            <div class="mood-btn" data-mood="creative">Creative</div>
+            <div class="mood-btn" data-mood="social">Social</div>
+            <div class="mood-btn" data-mood="relax">Relax</div>
+            <div class="mood-btn" data-mood="productive">Productive</div>
+            <div class="mood-btn" data-mood="adventurous">Adventurous</div>
+        </div>
+        
+        <div class="match-result glass-card" id="match-result">
+            <h3 class="match-coffee" id="match-coffee">Flat White</h3>
+            <p class="match-quote" id="match-quote">"A smooth, velvety coffee to complement your relaxed state. The microfoam creates a comforting texture while the double shot provides just enough lift."</p>
+            <p class="match-song" id="match-song">
+                <i class="fas fa-music"></i>
+                <span>Pair with: "Coffee" by Sylvan Esso</span>
+            </p>
+        </div>
+    </div>
+</section>
+
+    <section class="section brew-methods" id="brew">
+        <div class="container">
+            <h2 class="section-title">Brew Methods</h2>
+            <p class="text-center">Explore different ways to brew your perfect cup</p>
+            
+            <div class="methods-container">
+                <div class="method-card glass-card">
+                    <div class="method-img">
+                        <img src="pour.jpeg" alt="Pour Over">
+                    </div>
+                    <div class="method-content">
+                        <h3>Pour Over</h3>
+                        <p>Manual brewing method that offers control over all variables for a clean, flavorful cup.</p>
+                        
+                        <div class="method-details">
+                            <div class="method-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Brew Time: 2-4 minutes</span>
+                            </div>
+                            <div class="method-detail">
+                                <i class="fas fa-mug-hot"></i>
+                                <span>Flavor: Clean, bright, nuanced</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="method-btn" data-method="pour-over">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="method-card glass-card">
+                    <div class="method-img">
+                        <img src="french.jpeg" alt="French Press">
+                    </div>
+                    <div class="method-content">
+                        <h3>French Press</h3>
+                        <p>Full-immersion brewing that produces a rich, full-bodied cup with more oils.</p>
+                        
+                        <div class="method-details">
+                            <div class="method-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Brew Time: 4 minutes</span>
+                            </div>
+                            <div class="method-detail">
+                                <i class="fas fa-mug-hot"></i>
+                                <span>Flavor: Rich, full-bodied, bold</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="method-btn" data-method="french-press">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="method-card glass-card">
+                    <div class="method-img">
+                        <img src="cold.jpeg" alt="Cold Brew">
+                    </div>
+                    <div class="method-content">
+                        <h3>Cold Brew</h3>
+                        <p>Slow steeping process that produces smooth, low-acid coffee concentrate.</p>
+                        
+                        <div class="method-details">
+                            <div class="method-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Brew Time: 12-24 hours</span>
+                            </div>
+                            <div class="method-detail">
+                                <i class="fas fa-mug-hot"></i>
+                                <span>Flavor: Smooth, sweet, low acid</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="method-btn" data-method="cold-brew">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="method-modal">
+        <div class="modal-content glass-card">
+            <span class="close-modal">&times;</span>
+            
+            <div class="modal-header">
+                <h3 id="modal-title">Pour Over Method</h3>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="pour.jpeg" alt="Pour Over" id="modal-image">
+                </div>
+                
+                <div class="modal-text">
+                    <h4>About This Method</h4>
+                    <p id="modal-description">The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that highlights the coffee's origin characteristics.</p>
+                    
+                    <h4>Brew Ratio</h4>
+                    <p id="modal-ratio">1:16 coffee to water (e.g., 20g coffee to 320g water)</p>
+                    
+                    <h4>Brewing Steps</h4>
+                    <div class="modal-steps" id="modal-steps">
+                        <div class="modal-step">
+                            <div class="step-number">1</div>
+                            <p>Boil water and let it cool slightly. Rinse paper filter with hot water to remove paper taste and preheat brewer.</p>
+                        </div>
+                        <div class="modal-step">
+                            <div class="step-number">2</div>
+                            <p>Add medium-fine ground coffee to filter. Gently shake to level bed.</p>
+                        </div>
+                        <div class="modal-step">
+                            <div class="step-number">3</div>
+                            <p>Start timer and pour enough water to saturate all grounds. Let bloom for 30 seconds.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<section class="coffee-menu-section">
+    <h2 class="section-title">HAVE A CUP!</h2>
+
+    <div class="menu-items-grid">
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="esp.png" alt="Espresso Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Espresso</h3>
+                <p class="item-description">A concentrated coffee beverage brewed by forcing hot, pressurized water through finely ground coffee beans.</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="ame.png" alt="Americano Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Americano</h3>
+                <p class="item-description">A coffee drink prepared by diluting an espresso with hot water, giving it a similar strength to, but different flavor from, traditionally brewed coffee.</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="lat.png" alt="Latte Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Latte</h3>
+                <p class="item-description">A coffee drink made with espresso and steamed milk, often topped with a small amount of foam.</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="cap.png" alt="Cappuccino Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Cappuccino</h3>
+                <p class="item-description">An Italian coffee drink that is traditionally prepared with equal parts double espresso, steamed milk, and foamed milk on top.</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="moc.png" alt="Mocha Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Mocha</h3>
+                <p class="item-description">A chocolate-flavored warm beverage that is a variation of a latte.</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="item-image">
+                <img src="mac.png" alt="Macchiato Cup">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">Macchiato</h3>
+                <p class="item-description">An espresso coffee drink with a small amount of milk, typically foamed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="section link-cafe" id="links">
+        <div class="container">
+            <h2 class="section-title">Coffee Resources</h2>
+            <p class="text-center">Explore more coffee resources from around the web</p>
+            
+            <div class="links-container">
+                <div class="link-card glass-card">
+                    <div class="link-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Coffee Recipes</h3>
+                    <p>In-depth articles about coffee recipes.</p>
+                    <a href="https://athome.starbucks.com/recipe" class="link-btn">Explore</a>
+                </div>
+                
+                <div class="link-card glass-card">
+                    <div class="link-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3>YouTube Tutorials</h3>
+                    <p>Video knowledge, latte art lessons, and coffee equipment demonstrations.</p>
+                    <a href="https://youtube.com/@artisticoffeeroasters?si=EQisx_5qjvxB302t" class="link-btn">Watch Videos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Coffee Aura</h3>
+                    <p>A passion project dedicated to the art, science, and culture of coffee. Fueled by the love for coffee.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/mehakpreetkaurcheema"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/agostoMac?t=eJOjuP0jWaETmZkYT29fDA&s=09"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="#origins">Coffee Origins</a></li>
+                        <li><a href="#types">Coffee Types</a></li>
+                        <li><a href="#brew">Brew Methods</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Made with <i class="fas fa-mug-hot"></i> by Mehakpreet Kaur                 </p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div class="dark-mode-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Swiper for Fun Facts Carousel
+            const swiper = new Swiper('.swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-times');
+                this.querySelector('i').classList.toggle('fa-bars');
+            });
+            
+            // Close mobile menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                });
+            });
+            
+            // Header scroll effect
+            const header = document.querySelector('.header');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Quote slider
+            const quotes = document.querySelectorAll('.quote-slide');
+            const dots = document.querySelectorAll('.dot');
+            let currentSlide = 0;
+            
+            function showSlide(n) {
+                quotes.forEach(quote => quote.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                currentSlide = (n + quotes.length) % quotes.length;
+                quotes[currentSlide].classList.add('active');
+                dots[currentSlide].classList.add('active');
+            }
+            
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+            
+            // Auto-advance quotes
+            setInterval(nextSlide, 5000);
+            
+            // Dot navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    showSlide(parseInt(this.getAttribute('data-slide')));
+                });
+            });
+            
+            // Mood & Brew Match
+            const moodButtons = document.querySelectorAll('.mood-btn');
+            const matchResult = document.getElementById('match-result');
+            const matchCoffee = document.getElementById('match-coffee');
+            const matchQuote = document.getElementById('match-quote');
+            const matchSong = document.getElementById('match-song');
+            
+            // Expanded Mood & Brew Data
+const moodData = {
+    'chill': {
+        coffee: 'Flat White',
+        quote: '"A smooth, velvety coffee to complement your relaxed state. The microfoam creates a comforting texture while the double shot provides just enough lift."',
+        song: '"Coffee" by Sylvan Esso'
+    },
+    'focus': {
+        coffee: 'Espresso',
+        quote: '"Concentrated and powerful, like your focus. The intense flavor cuts through distractions while the caffeine sharpens your mind."',
+        song: '"Concentration" by Moon Taxi'
+    },
+    'energize': {
+        coffee: 'Cold Brew',
+        quote: '"Smooth yet potent, cold brew delivers a steady caffeine boost without acidity. Perfect for sustained energy throughout your day."',
+        song: '"Energy" by Disclosure'
+    },
+    'creative': {
+        coffee: 'Cortado',
+        quote: '"The perfect balance of espresso and milk to stimulate creativity without overwhelming your senses. Just enough to get ideas flowing."',
+        song: '"Creative" by Leon Bridges'
+    },
+    'social': {
+        coffee: 'Café au Lait',
+        quote: '"A friendly, approachable coffee that pairs perfectly with conversation. The equal parts coffee and steamed milk make it ideal for sharing."',
+        song: '"We Are Family" by Sister Sledge'
+    },
+    'relax': {
+        coffee: 'Latte',
+        quote: '"Creamy and comforting, a latte is like a warm hug in a cup. The extra milk makes it smooth and easy to sip slowly."',
+        song: '"Banana Pancakes" by Jack Johnson'
+    },
+    'productive': {
+        coffee: 'Americano',
+        quote: '"Simple, straightforward, and effective - just like your productivity. Hot water extends the espresso for longer sipping during work sessions."',
+        song: '"Work" by Rihanna'
+    },
+    'adventurous': {
+        coffee: 'Turkish Coffee',
+        quote: '"Bold and unfiltered, Turkish coffee is for those seeking new experiences. The intense flavor and unique preparation make it a true adventure."',
+        song: '"Adventure of a Lifetime" by Coldplay'
+    }
+};
+            
+            moodButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const mood = this.getAttribute('data-mood');
+                    
+                    // Remove active class from all buttons
+                    moodButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update match result
+                    matchCoffee.textContent = moodData[mood].coffee;
+                    matchQuote.textContent = moodData[mood].quote;
+                    matchSong.querySelector('span').textContent = `Pair with: ${moodData[mood].song}`;
+                    
+                    // Show result
+                    matchResult.classList.add('active');
+                });
+            });
+            
+            // Brew Method Modals
+            const methodButtons = document.querySelectorAll('.method-btn');
+            const modal = document.getElementById('method-modal');
+            const closeModal = document.querySelector('.close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalImage = document.getElementById('modal-image');
+            const modalDescription = document.getElementById('modal-description');
+            const modalRatio = document.getElementById('modal-ratio');
+            const modalSteps = document.getElementById('modal-steps');
+            
+            const methodData = {
+                'pour-over': {
+                    title: 'Pour Over Method',
+                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    description: 'The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that highlights the coffee\'s origin characteristics.',
+                    ratio: '1:16 coffee to water (e.g., 20g coffee to 320g water)',
+                    steps: [
+                        'Boil water and let it cool slightly. Rinse paper filter with hot water to remove paper taste and preheat brewer.',
+                        'Add medium-fine ground coffee to filter. Gently shake to level bed.',
+                        'Start timer and pour enough water (about 50g) to saturate all grounds. Let bloom for 30 seconds.'
+                    ]
+                },
+                'french-press': {
+                    title: 'French Press Method',
+                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    description: 'The French press, or press pot, is a full-immersion brewing method where coffee grounds steep in hot water before being separated by pressing down a metal filter. This method produces a rich, full-bodied cup with more oils and sediment than paper-filtered methods.',
+                    ratio: '1:15 coffee to water (e.g., 30g coffee to 450g water)',
+                    steps: [
+                        'Boil water and let it cool slightly. Preheat French press by rinsing with hot water.',
+                        'Add coarse ground coffee to the empty press.',
+                        'Start timer and pour hot water over grounds, saturating all coffee. Give a gentle stir.'
+                    ]
+                },
+                'cold-brew': {
+                    title: 'Cold Brew Method',
+                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    description: 'Cold brew is made by steeping coarse coffee grounds in cold or room temperature water for an extended period (12-24 hours). The slow extraction produces a smooth, sweet concentrate with very low acidity that can be diluted with water or milk and served over ice or heated.',
+                    ratio: '1:4 to 1:8 coffee to water for concentrate (e.g., 100g coffee to 400-800g water)',
+                    steps: [
+                        'Combine coarse ground coffee and cold/room temperature water in jar or pitcher.',
+                        'Stir gently to ensure all grounds are saturated. Cover and let steep at room temperature.',
+                        'After 12-24 hours, strain through fine mesh sieve or coffee filter.'
+                    ]
+                }
+                
+            };
+            
+            methodButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const method = this.getAttribute('data-method');
+                    const data = methodData[method];
+                    
+                    // Update modal content
+                    modalTitle.textContent = data.title;
+                    modalImage.src = data.image;
+                    modalImage.alt = data.title;
+                    modalDescription.textContent = data.description;
+                    modalRatio.textContent = data.ratio;
+                    
+                    // Clear existing steps
+                    modalSteps.innerHTML = '';
+                    
+                    // Add new steps
+                    data.steps.forEach((step, index) => {
+                        const stepElement = document.createElement('div');
+                        stepElement.className = 'modal-step';
+                        
+                        const numberElement = document.createElement('div');
+                        numberElement.className = 'step-number';
+                        numberElement.textContent = index + 1;
+                        
+                        const textElement = document.createElement('p');
+                        textElement.textContent = step;
+                        
+                        stepElement.appendChild(numberElement);
+                        stepElement.appendChild(textElement);
+                        modalSteps.appendChild(stepElement);
+                    });
+                    
+                    // Show modal
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Back to Top Button
+            const backToTop = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('active');
+                } else {
+                    backToTop.classList.remove('active');
+                }
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Dark Mode Toggle
+            const darkModeToggle = document.querySelector('.dark-mode-toggle');
+            
+            darkModeToggle.addEventListener('click', function() {
+                const html = document.documentElement;
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                
+                if (isDark) {
+                    html.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    this.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    this.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            });
+            
+            // Check for saved theme preference
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Caffeine Calculator
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resultDiv = document.getElementById('calculator-result');
+            const resultValue = document.getElementById('result-value');
+            const resultMessage = document.getElementById('result-message');
+            
+            calculateBtn.addEventListener('click', function() {
+                const cups = parseInt(document.getElementById('cups').value);
+                const hours = parseInt(document.getElementById('time').value);
+                
+                // Average caffeine per cup (mg)
+                const caffeinePerCup = 95;
+                const totalCaffeine = cups * caffeinePerCup;
+                
+                // Calculate remaining caffeine using half-life (5 hours)
+                const halfLives = hours / 5;
+                const remainingCaffeine = totalCaffeine * Math.pow(0.5, halfLives);
+                
+                // Display result
+                resultValue.textContent = `${remainingCaffeine.toFixed(1)} mg`;
+                
+                // Add message based on caffeine level
+                if (remainingCaffeine > 200) {
+                    resultMessage.textContent = "You still have significant caffeine in your system. Consider waiting before your next cup.";
+                } else if (remainingCaffeine > 50) {
+                    resultMessage.textContent = "You have moderate caffeine levels. Another cup now might affect your sleep.";
+                } else {
+                    resultMessage.textContent = "Your caffeine levels are low. You can enjoy another cup if desired.";
+                }
+                
+                resultDiv.classList.add('active');
+            });
+
+            // Weather-Based Brew Suggestion
+            const weatherBtn = document.getElementById('weather-btn');
+            const weatherText = document.getElementById('weather-text');
+            const weatherIcon = document.getElementById('weather-icon');
+            const suggestedCoffee = document.getElementById('suggested-coffee');
+            
+            weatherBtn.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    weatherText.textContent = "Detecting your location and weather...";
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            
+                            // In a real app, you would call a weather API here
+                            // For demo purposes, we'll simulate weather conditions
+                            simulateWeatherResponse(lat, lon);
+                        },
+                        function(error) {
+                            weatherText.textContent = "Could not access your location. Using default weather suggestion.";
+                            suggestCoffeeBasedOnWeather('default');
+                        }
+                    );
+                } else {
+                    weatherText.textContent = "Geolocation is not supported by your browser. Using default weather suggestion.";
+                    suggestCoffeeBasedOnWeather('default');
+                }
+            });
+
+            function simulateWeatherResponse(lat, lon) {
+                // Simulate API call delay
+                setTimeout(() => {
+                    // For demo, we'll randomly pick a weather condition
+                    const conditions = ['sunny', 'rainy', 'cloudy', 'cold'];
+                    const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+                    
+                    suggestCoffeeBasedOnWeather(randomCondition);
+                }, 1500);
+            }
+
+            function suggestCoffeeBasedOnWeather(condition) {
+                let weatherDesc, iconClass, suggestion;
+                
+                switch(condition) {
+                    case 'sunny':
+                        weatherDesc = "It's sunny today!";
+                        iconClass = "fas fa-sun";
+                        suggestion = "Iced Americano";
+                        break;
+                    case 'rainy':
+                        weatherDesc = "It's rainy today!";
+                        iconClass = "fas fa-cloud-rain";
+                        suggestion = "Warm Cappuccino";
+                        break;
+                    case 'cloudy':
+                        weatherDesc = "It's cloudy today!";
+                        iconClass = "fas fa-cloud";
+                        suggestion = "Latte with cinnamon";
+                        break;
+                    case 'cold':
+                        weatherDesc = "It's cold today!";
+                        iconClass = "fas fa-temperature-low";
+                        suggestion = "Mocha with whipped cream";
+                        break;
+                    default:
+                        weatherDesc = "Perfect coffee weather!";
+                        iconClass = "fas fa-cloud-sun";
+                        suggestion = "Flat White";
+                }
+                
+                weatherText.textContent = weatherDesc;
+                weatherIcon.innerHTML = `<i class="${iconClass}"></i>`;
+                suggestedCoffee.textContent = `We recommend: ${suggestion}`;
+            }
+           
+        });
+    </script>
+</body>
+</html>
+
