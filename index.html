@@ -116,6 +116,11 @@
             margin-bottom: 1.5rem;
             text-align: center;
             position: relative;
+            display: block; /* Ensure it behaves as a block for margin: auto */
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content; /* Make the block only as wide as its content */
+            max-width: 90%; /* Prevent it from being too wide on smaller screens */
         }
 
         .section-title::after {
@@ -124,7 +129,7 @@
             width: 60px;
             height: 2px;
             background-color: var(--accent);
-            margin: 1rem auto 0;
+            margin: 1rem auto 0; /* This centers the underline */
         }
 
         .btn {
@@ -175,7 +180,7 @@
             border: 1px solid var(--glass-border);
             transition: var(--transition);
             overflow: hidden;
-            position: relative;
+            position: relative; /* Crucial for ::before z-index */
         }
 
         .glass-card::before {
@@ -186,102 +191,139 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            z-index: -1;
+            z-index: -1; /* Ensures it's behind content */
             border-radius: 16px;
         }
+/* Flip Card Styles - Fixed */
+.flip-card {
+    perspective: 1000px;
+    height: 350px; /* Keep a fixed height for the flip card container */
+    width: 100%;
+    /* Ensure children are positioned correctly relative to this */
+    position: relative;
+    /* Add this to make sure .flip-card-inner is positioned correctly */
+}
 
-        /* Flip Card Styles - Fixed */
-        .flip-card {
-            perspective: 1000px;
-            height: 350px;
-            width: 100%;
-        }
+.flip-card-inner {
+    position: absolute; /* Change to absolute */
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
 
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
+/* FIX: Rotate the inner card on hover */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
 
-        /* FIX: Rotate the inner card on hover */
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
+.flip-card-front,
+.flip-card-back {
+    position: absolute; /* Crucial: Make them absolutely positioned */
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
 
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden; /* Crucial for hiding the back face */
-            border-radius: 16px; /* Apply border-radius here */
-            overflow: hidden; /* Apply overflow here */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+    /* Add these for proper alignment of content within faces */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Ensures content is centered horizontally for both front and back */
+    text-align: center;
+}
 
-            /* Apply glass-card specific styles directly to faces */
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
+/* Add the ::before pseudo-element to the front and back directly */
+.flip-card-front::before,
+.flip-card-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    z-index: -1;
+    border-radius: 16px;
+}
 
-        /* Add the ::before pseudo-element to the front and back directly */
-        .flip-card-front::before, .flip-card-back::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            z-index: -1;
-            border-radius: 16px;
-        }
+/* Front of card - just name and image */
+.flip-card-front {
+    transform: rotateY(0deg);
+    /* Ensure the front content is always centered vertically and horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-        /* Front of card - just name and image */
-        .flip-card-front {
-            transform: rotateY(0deg); /* Ensures the front face is initially facing forward */
-            display: flex;
-            flex-direction: column;
-        }
+.flip-card-front .type-img {
+    height: 200px;
+    overflow: hidden;
+    width: 100%; /* Ensure image container takes full width */
+    display: flex; /* Use flexbox to center the image if it's smaller than 200px height */
+    justify-content: center;
+    align-items: center;
+}
 
-        .flip-card-front .type-img {
-            height: 200px;
-            overflow: hidden;
-        }
+.flip-card-front .type-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
 
-        .flip-card-front .type-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
+.flip-card:hover .flip-card-front .type-img img {
+    transform: scale(1.05);
+}
 
-        .flip-card:hover .flip-card-front .type-img img {
-            transform: scale(1.05);
-        }
+.flip-card-front .type-content {
+    padding: 1rem;
+    text-align: center;
+    width: 100%; /* Ensure content takes full width */
+    flex-grow: 1; /* Allow type-content to take remaining vertical space */
+    display: flex; /* Make it a flex container to center its child vertically */
+    align-items: center; /* Center h3 vertically */
+    justify-content: center; /* Center h3 horizontally */
+}
 
-        .flip-card-front .type-content {
-            padding: 1rem;
-            text-align: center;
-        }
+.flip-card-front .type-content p {
+    display: none; /* Keep this as is, but ensure its absence doesn't cause layout shifts */
+}
 
-        .flip-card-front .type-content p {
-            display: none;
-        }
+/* Back of card - details */
+.flip-card-back {
+    transform: rotateY(180deg);
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(62, 39, 35, 0.7), rgba(93, 64, 55, 0.7));
+    color: var(--secondary-lighter);
+    /* Add specific text alignment for the back */
+    text-align: left; /* Ensure text starts from the left */
+    display: flex; /* Keep as flex to manage internal content alignment */
+    flex-direction: column;
+    justify-content: center; /* Vertically center content */
+    align-items: flex-start; /* Align text to the start (left) within the card */
+}
 
-        /* Back of card - details */
-        .flip-card-back {
-            /* Initially rotated 180deg to be hidden, then appears correctly */
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(62, 39, 35, 0.7), rgba(93, 64, 55, 0.7));
-            color: var(--secondary-lighter);
-        }
+.flip-card-back h3 {
+    margin-bottom: 1rem;
+    text-align: center; /* Center the heading within the back card */
+    width: 100%; /* Ensure heading takes full width for centering */
+}
+
+.flip-card-back p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    width: 100%; /* Ensure paragraphs take full width */
+    text-align: left; /* Explicitly align paragraphs to the left */
+}
+
 
         /* Weather Suggestion Styles */
         .weather-suggestion {
@@ -292,21 +334,28 @@
             position: relative;
         }
 
+        .weather-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .weather-temp {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
         .weather-icon {
             font-size: 3rem;
-            margin-bottom: 1rem;
         }
 
-        .weather-text {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .suggested-coffee {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: 1rem;
+        .weather-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         /* Timeline Styles */
@@ -715,71 +764,237 @@
             font-weight: 500;
             backdrop-filter: blur(5px);
         }
-
-        /* ===== Coffee Benefits ===== */
-        .benefits {
-            background-color: var(--bg-cream);
+        /* ===== Coffee Benefits Section ===== */
+        #benefits { /* IMPORTANT: Target only the #benefits section */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('coffee-benefits-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--secondary-lighter); /* Base text color for the section */
+            padding: 6rem 1rem;
+            text-align: center; /* Center text globally in the section */
         }
 
-        .benefits-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        #benefits .section-title { /* Make title specific to #benefits */
+            color: var(--secondary-lighter);
+            margin-bottom: 1rem;
         }
 
-        .benefit-card {
-            padding: 2rem;
+        #benefits .section-title::after { /* Make title underline specific */
+            background-color: var(--accent);
+        }
+
+        #benefits .text-center { /* Make subtitle specific */
+            color: var(--secondary-lighter);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* ===== Benefits Grid Container (specific) ===== */
+        #benefits .benefits-container { /* Target only the .benefits-grid INSIDE #benefits */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* ===== Individual Benefit Card Styles (specific) ===== */
+        #benefits .benefit-card { /* Target only .benefit-card INSIDE #benefits */
+            flex: 1 1 280px;
+            max-width: 320px;
+            padding: 2.5rem 1.5rem;
             text-align: center;
             transition: var(--transition);
+            color: var(--secondary-lighter); /* Text color inside card */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
         }
 
-        .benefit-card:hover {
+        #benefits .benefit-card:hover { /* Hover specific */
             transform: translateY(-10px);
         }
 
-        .benefit-icon {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(215, 204, 200, 0.5);
+        #benefits .benefit-card h3 { /* H3 specific */
+            color: var(--secondary-lighter);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        #benefits .benefit-card p { /* P specific */
+            color: var(--secondary-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* ===== Benefit Icon Styles (specific) ===== */
+        #benefits .benefit-icon { /* Icon specific */
+            width: 75px;
+            height: 75px;
+            background-color: rgba(255, 255, 255, 0.25);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
-            color: var(--primary-medium);
-            font-size: 1.5rem;
+            margin: 0 auto 1.8rem;
+            color: var(--secondary-lighter);
+            font-size: 2.2rem;
             transition: var(--transition);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
         }
 
-        .benefit-card:hover .benefit-icon {
-            background-color: rgba(188, 170, 164, 0.7);
+        #benefits .benefit-card:hover .benefit-icon { /* Icon hover specific */
+            background-color: rgba(255, 255, 255, 0.4);
             color: var(--primary-dark);
         }
 
-        .benefit-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+        /* ===== Dark Mode Adjustments (specific to #benefits) ===== */
+        [data-theme="dark"] #benefits { /* Dark mode for #benefits section */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('coffee-benefits-bg.jpg');
+            color: var(--text-dark);
         }
 
-        .benefit-card p {
-            color: var(--text-light);
-            font-size: 0.9rem;
+        [data-theme="dark"] #benefits .section-title,
+        [data-theme="dark"] #benefits .text-center { /* Dark mode for title/subtitle */
+            color: var(--text-dark);
         }
+
+        [data-theme="dark"] #benefits .benefit-card { /* Dark mode for card */
+            color: var(--text-dark);
+        }
+
+        [data-theme="dark"] #benefits .benefit-card h3 { /* Dark mode for card H3 */
+            color: var(--text-dark);
+        }
+
+        [data-theme="dark"] #benefits .benefit-card p { /* Dark mode for card P */
+            color: var(--text-light);
+        }
+
+        [data-theme="dark"] #benefits .benefit-icon { /* Dark mode for icon */
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--text-dark);
+        }
+
+        [data-theme="dark"] #benefits .benefit-card:hover .benefit-icon { /* Dark mode for icon hover */
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-dark);
+        }
+
+        /* ===== Responsive Adjustments (Media Queries, specific to #benefits) ===== */
+        @media (max-width: 768px) {
+            #benefits {
+                padding: 4rem 0.5rem;
+            }
+
+            #benefits .benefits-container {
+                gap: 1.5rem;
+            }
+
+            #benefits .benefit-card {
+                flex: 1 1 90%;
+                max-width: 400px;
+                padding: 2rem 1rem;
+            }
+
+            #benefits .benefit-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            #benefits .benefit-card h3 {
+                font-size: 1.2rem;
+            }
+
+            #benefits .benefit-card p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #benefits .section-title {
+                font-size: 1.8rem;
+            }
+
+            #benefits .text-center {
+                font-size: 1rem;
+            }
+
+            #benefits .benefits-container {
+                gap: 1rem;
+            }
+
+            #benefits .benefit-card {
+                flex: 1 1 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+        }
+
 
         /* ===== Coffee Types ===== */
         .coffee-types {
             background-color: var(--bg-latte);
         }
 
-        .types-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            padding-bottom: 2rem; /* Add padding for consistency with quiz spacing */
-        }
+        /* In your existing CSS, find the .types-container selector */
+.types-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-bottom: 2rem; /* Add padding for consistency with quiz spacing */
+    /* ADD THESE TWO LINES FOR ALIGNMENT */
+    justify-items: center; /* Centers individual grid items within their cells */
+    justify-content: center; /* Centers the entire grid within its container if it doesn't fill the width */
+}
+
+/* Ensure the flip-card takes up the full space of its grid cell */
+.flip-card {
+    perspective: 1000px;
+    height: 350px; /* Keep a fixed height for the flip card container */
+    width: 100%; /* Ensure it takes full width of its grid cell */
+    position: relative; /* Add this to make sure .flip-card-inner is positioned correctly */
+    display: flex; /* Make it a flex container to potentially help align its content */
+    justify-content: center; /* Center horizontally within its own flex container */
+    align-items: center; /* Center vertically within its own flex container */
+}
+
+/* Ensure front and back content is always centered */
+.flip-card-front,
+.flip-card-back {
+    /* ... existing styles ... */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Ensures content is centered vertically */
+    align-items: center; /* Ensures content is centered horizontally */
+    text-align: center; /* Ensures text is centered */
+}
+
+/* For the back of the card, if you want text aligned left, ensure padding and alignment are correct */
+.flip-card-back {
+    /* ... existing styles ... */
+    text-align: left; /* Ensure text starts from the left */
+    align-items: flex-start; /* Align content to the start (left) within the card */
+    padding: 2rem; /* Add sufficient padding */
+}
+
+/* Ensure the heading within the back of the card is centered, even if other text is left-aligned */
+.flip-card-back h3 {
+    margin-bottom: 1rem;
+    text-align: center; /* Center the heading within the back card */
+    width: 100%; /* Ensure heading takes full width for centering */
+}
+
 
         .type-card {
             transition: var(--transition);
@@ -882,44 +1097,86 @@
 
         /* ===== Caffeine Knowledge ===== */
         .caffeine {
-            background-color: var(--bg-latte);
+            background-image: linear-gradient(rgba(62, 39, 35, 0.4), rgba(62, 39, 35, 0.4)), url('caffeine-knowledge-bg.jpg'); /* REPLACE with your image path */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Optional: for parallax-like effect */
+            color: var(--secondary-lighter); /* Text color for the section */
+            padding: 80px 0; /* Adjust padding as needed */
+            position: relative; /* Needed for the pseudo-element overlay */
+            z-index: 0; /* Ensure it's below the content */
+        }
+
+        /* Overlay for better text readability on the background image */
+        .caffeine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black overlay */
+            z-index: -1; /* Place behind content */
+        }
+
+        /* Ensure content is above the overlay */
+        .caffeine .container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .caffeine .section-title {
+            color: var(--secondary-lighter); /* White title for readability */
+        }
+
+        .caffeine .section-title::after {
+            background-color: var(--accent); /* Accent color for underline */
+        }
+
+        .caffeine .text-center {
+            color: var(--secondary-light); /* Lighter text for subtitle */
         }
 
         .caffeine-container {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
+            align-items: flex-start; /* Align items to the top */
             gap: 3rem;
             margin-top: 3rem;
+            justify-content: center; /* Center the cards */
         }
 
-        .caffeine-text {
+        .caffeine-text,
+        .caffeine-facts {
             flex: 1;
             min-width: 300px;
+            max-width: 500px; /* Limit max width for better card appearance */
+            padding: 2rem; /* Consistent padding */
+            /* The glass-card class already applies most styles */
         }
 
         .caffeine-text h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
+            color: var(--secondary-lighter); /* White heading for glass card */
         }
 
         .caffeine-text p {
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
-            color: var(--text-light);
+            color: var(--secondary-light); /* Lighter text for readability */
         }
 
-        .caffeine-facts {
-            flex: 1;
-            min-width: 300px;
-            padding: 2rem;
-            position: relative;
+        .caffeine-facts h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-lighter); /* White heading for glass card */
         }
-
+        
         .fact-item {
             margin-bottom: 1.5rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(215, 204, 200, 0.5);
+            border-bottom: 1px solid rgba(215, 204, 200, 0.2); /* Lighter border for glass effect */
         }
 
         .fact-item:last-child {
@@ -931,18 +1188,42 @@
         .fact-item h3 {
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            color: var(--accent);
+            color: var(--accent); /* Accent color for fact headings */
         }
 
         .fact-item p {
             font-size: 0.9rem;
-            color: var(--text-light);
+            color: var(--secondary-light); /* Lighter text for facts */
         }
 
-        .quiz-btn {
-            margin-top: 2rem;
-            text-align: center;
+        /* Dark Mode adjustments for Caffeine Knowledge */
+        [data-theme="dark"] .caffeine {
+            background-image: linear-gradient(rgba(30, 30, 30, 0.6), rgba(30, 30, 30, 0.6)), url('caffeine-knowledge-bg.jpg'); /* Darker overlay in dark mode */
+            color: var(--text-dark); /* Adjust text color for dark mode */
         }
+
+        [data-theme="dark"] .caffeine .section-title {
+            color: var(--text-dark); /* Dark mode title */
+        }
+
+        [data-theme="dark"] .caffeine .text-center {
+            color: var(--text-medium); /* Dark mode subtitle */
+        }
+
+        [data-theme="dark"] .caffeine-text h3,
+        [data-theme="dark"] .caffeine-facts h3 {
+            color: var(--text-dark); /* Dark mode card headings */
+        }
+
+        [data-theme="dark"] .caffeine-text p,
+        [data-theme="dark"] .fact-item p {
+            color: var(--text-light); /* Dark mode card paragraphs */
+        }
+
+        [data-theme="dark"] .fact-item {
+            border-color: rgba(8D6E63, 0.2); /* Dark mode border for facts */
+        }
+
 
         /* ===== Coffee Quotes ===== */
         .quotes {
@@ -1034,6 +1315,8 @@
             font-size: 0.9rem;
             background: var(--glass-light);
             backdrop-filter: blur(5px);
+            min-width: 120px;
+            text-align: center;
         }
 
         .mood-btn:hover {
@@ -1172,53 +1455,6 @@
         .method-btn:hover i {
             transform: translateX(3px);
         }
-/* Weather Suggestion - Enhanced */
-.weather-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.weather-temp {
-    font-size: 2rem;
-    font-weight: 600;
-}
-
-.weather-icon {
-    font-size: 3rem;
-}
-
-.weather-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* Mood & Brew - Expanded */
-.moods-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 3rem;
-}
-
-.mood-btn {
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-    border: 1px solid var(--glass-border);
-    font-size: 0.9rem;
-    background: var(--glass-light);
-    backdrop-filter: blur(5px);
-    min-width: 120px;
-    text-align: center;
-}
         /* Modal */
         .modal {
             display: none;
@@ -1321,132 +1557,122 @@
             font-size: 0.8rem;
             flex-shrink: 0;
         }
-    /* --- Coffee Menu Section Styles --- */
+        /* --- Coffee Menu Section Styles --- */
 
-/* Basic body styles for overall look if not already defined elsewhere */
-body {
-    /* Example: adjust as needed if you have existing body styles */
-    /* font-family: 'Open Sans', sans-serif; */
-    /* background-color: #f8f5f0; */
-    /* color: #333; */
-    /* line-height: 1.6; */
-}
+        .coffee-menu-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
-/* Section Styling */
-.coffee-menu-section {
-    padding: 60px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-    /* Optional: Add a top margin if this section immediately follows another */
-    /* margin-top: 50px; */
-}
+        .coffee-menu-section .section-title {
+            font-size: 3em;
+            color: #5a4b41; /* Darker brown for title */
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+        }
 
-.section-title {
-    /* Example font, adjust if you have a specific font in your project or want to import one */
-    /* font-family: 'Playfair Display', serif; */
-    font-size: 3em;
-    color: #5a4b41; /* Darker brown for title */
-    margin-bottom: 60px;
-    position: relative;
-    display: inline-block;
-}
+        .coffee-menu-section .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #c9a47c; /* Accent color */
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
 
-.section-title::after {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 3px;
-    background-color: #c9a47c; /* Accent color */
-    margin: 15px auto 0;
-    border-radius: 2px;
-}
+        /* Menu Items Grid */
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 40px;
+            justify-content: center;
+            align-items: start; /* Align items to the top */
+        }
 
-/* Menu Items Grid */
-.menu-items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 40px;
-    justify-content: center;
-    align-items: start; /* Align items to the top */
-}
+        .menu-item {
+            display: flex;
+            align-items: center; /* Vertically align image and text */
+            text-align: left; /* Align text within item */
+            background-color: var(--white); /* Use white from your theme */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            transition: transform 0.3s ease;
+        }
 
-.menu-item {
-    display: flex;
-    align-items: center; /* Vertically align image and text */
-    text-align: left; /* Align text within item */
-    background-color: #ffffff; /* White background for each item */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-    transition: transform 0.3s ease;
-}
+        [data-theme="dark"] .menu-item {
+            background-color: var(--secondary-lighter); /* Dark mode background for menu items */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.menu-item:hover {
-    transform: translateY(-5px); /* Slight lift on hover */
-}
+        .menu-item:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+        }
 
-.item-image {
-    flex-shrink: 0; /* Prevent image from shrinking */
-    width: 80px; /* Adjust size of your cup image container */
-    height: 80px;
-    margin-right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .item-image {
+            flex-shrink: 0; /* Prevent image from shrinking */
+            width: 80px; /* Adjust size of your cup image container */
+            height: 80px;
+            margin-right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.item-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Ensure image fits without distortion */
-}
+        .item-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Ensure image fits without distortion */
+        }
 
-.item-details {
-    flex-grow: 1; /* Allow details to take remaining space */
-}
+        .item-details {
+            flex-grow: 1; /* Allow details to take remaining space */
+        }
 
-.item-name {
-    /* font-family: 'Playfair Display', serif; */ /* Example font */
-    font-size: 1.5em;
-    color: #4a3e36; /* Slightly darker brown for name */
-    margin-top: 0;
-    margin-bottom: 8px;
-}
+        .item-name {
+            font-size: 1.5em;
+            color: var(--text-dark); /* Use dark text from your theme */
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
 
-.item-description {
-    font-size: 0.95em;
-    color: #666;
-    margin-bottom: 0;
-}
-    
+        .item-description {
+            font-size: 0.95em;
+            color: var(--text-medium); /* Use medium text from your theme */
+            margin-bottom: 0;
+        }
+            
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .menu-items-grid {
-        grid-template-columns: 1fr; /* Stack items on smaller screens */
-    }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .menu-items-grid {
+                grid-template-columns: 1fr; /* Stack items on smaller screens */
+            }
 
-    .section-title {
-        font-size: 2.5em;
-    }
-}
+            .coffee-menu-section .section-title {
+                font-size: 2.5em;
+            }
+        }
 
-@media (max-width: 480px) {
-    .section-title {
-        font-size: 2em;
-    }
+        @media (max-width: 480px) {
+            .coffee-menu-section .section-title {
+                font-size: 2em;
+            }
 
-    .menu-item {
-        flex-direction: column; /* Stack image and text vertically */
-        text-align: center;
-    }
+            .menu-item {
+                flex-direction: column; /* Stack image and text vertically */
+                text-align: center;
+            }
 
-    .item-image {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-}
+            .item-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
 
 
         /* ===== Link Café ===== */
@@ -1633,166 +1859,144 @@ body {
             background-color: var(--primary-dark);
             transform: translateY(-5px);
         }
-.section-title {
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    text-align: center; /* This centers the text within the h2 */
-    position: relative;
-    /* Keep it as a block element by default */
-    display: block;
-    /* Add margin auto to center the block itself */
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content; /* This makes the block only as wide as its content */
-    max-width: 90%; /* Prevent it from being too wide on smaller screens */
-}
 
-.section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 2px;
-    background-color: var(--accent);
-    margin: 1rem auto 0; /* This centers the underline */
-}
+        /* Quiz Specific Styles */
+        .coffee-quiz {
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 2rem;
+            text-align: center;
+            background-color: var(--bg-latte); /* Use a light background from your theme */
+        }
 
-/* Quiz Specific Styles */
-.coffee-quiz {
-    max-width: 700px;
-    margin: 3rem auto;
-    padding: 2rem;
-    text-align: center;
-    background-color: var(--bg-latte); /* Use a light background from your theme */
-}
+        .quiz-question {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
 
-.quiz-question {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-dark);
-}
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
 
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 2rem;
-}
+        .quiz-option {
+            padding: 12px 20px;
+            border: 1px solid var(--secondary-light);
+            border-radius: 8px;
+            background-color: var(--glass-light);
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-size: 1rem;
+        }
 
-.quiz-option {
-    padding: 12px 20px;
-    border: 1px solid var(--secondary-light);
-    border-radius: 8px;
-    background-color: var(--glass-light);
-    color: var(--text-medium);
-    cursor: pointer;
-    transition: var(--transition);
-    text-align: center;
-    font-size: 1rem;
-}
+        .quiz-option:hover {
+            background-color: rgba(188, 170, 164, 0.2); /* Lighter accent shade for hover */
+            transform: translateY(-2px);
+        }
 
-.quiz-option:hover {
-    background-color: rgba(188, 170, 164, 0.2); /* Lighter accent shade for hover */
-    transform: translateY(-2px);
-}
+        .quiz-option.selected {
+            background-color: var(--primary-medium); /* Darker primary for selected */
+            color: var(--secondary-lighter);
+            border-color: var(--primary-medium);
+        }
 
-.quiz-option.selected {
-    background-color: var(--primary-medium); /* Darker primary for selected */
-    color: var(--secondary-lighter);
-    border-color: var(--primary-medium);
-}
+        .quiz-option.correct {
+            background-color: #66bb6a; /* Green for correct */
+            color: var(--white);
+            border-color: #4CAF50;
+        }
 
-.quiz-option.correct {
-    background-color: #66bb6a; /* Green for correct */
-    color: var(--white);
-    border-color: #4CAF50;
-}
+        .quiz-option.incorrect {
+            background-color: #ef5350; /* Red for incorrect */
+            color: var(--white);
+            border-color: #f44336;
+        }
 
-.quiz-option.incorrect {
-    background-color: #ef5350; /* Red for incorrect */
-    color: var(--white);
-    border-color: #f44336;
-}
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
 
-.quiz-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-}
+        .quiz-feedback {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            min-height: 2rem; /* Reserve space to prevent layout shift */
+        }
 
-.quiz-feedback {
-    margin-top: 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--text-dark);
-    min-height: 2rem; /* Reserve space to prevent layout shift */
-}
+        .quiz-results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(188, 170, 164, 0.2);
+            display: none; /* Hidden by default */
+        }
 
-.quiz-results {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    border-radius: 8px;
-    background-color: rgba(188, 170, 164, 0.2);
-    display: none; /* Hidden by default */
-}
+        .quiz-results.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
 
-.quiz-results.active {
-    display: block;
-    animation: fadeIn 0.5s ease;
-}
+        .quiz-results h3 {
+            font-size: 1.6rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
 
-.quiz-results h3 {
-    font-size: 1.6rem;
-    color: var(--accent);
-    margin-bottom: 1rem;
-}
+        .quiz-score {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
 
-.quiz-score {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--primary-dark);
-}
+        .quiz-score span {
+            color: var(--accent);
+        }
 
-.quiz-score span {
-    color: var(--accent);
-}
+        .quiz-message {
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            color: var(--text-medium);
+        }
 
-.quiz-message {
-    margin-top: 0.8rem;
-    font-size: 1rem;
-    color: var(--text-medium);
-}
+        /* Dark Mode Quiz Adjustments */
+        [data-theme="dark"] .coffee-quiz {
+            background-color: var(--secondary-lighter); /* Darker background for quiz in dark mode */
+        }
 
-/* Dark Mode Quiz Adjustments */
-[data-theme="dark"] .coffee-quiz {
-    background-color: var(--secondary-lighter); /* Darker background for quiz in dark mode */
-}
+        [data-theme="dark"] .quiz-option {
+            background-color: var(--glass-dark);
+            color: var(--text-light);
+            border-color: var(--secondary-light);
+        }
 
-[data-theme="dark"] .quiz-option {
-    background-color: var(--glass-dark);
-    color: var(--text-light);
-    border-color: var(--secondary-light);
-}
+        [data-theme="dark"] .quiz-option:hover {
+            background-color: rgba(141, 110, 99, 0.2);
+        }
 
-[data-theme="dark"] .quiz-option:hover {
-    background-color: rgba(141, 110, 99, 0.2);
-}
+        [data-theme="dark"] .quiz-option.selected {
+            background-color: var(--primary-light);
+            color: var(--bg-cream);
+            border-color: var(--primary-light);
+        }
 
-[data-theme="dark"] .quiz-option.selected {
-    background-color: var(--primary-light);
-    color: var(--bg-cream);
-    border-color: var(--primary-light);
-}
+        [data-theme="dark"] .quiz-option.correct {
+            background-color: #388e3c; /* Darker green */
+            color: var(--white);
+        }
 
-[data-theme="dark"] .quiz-option.correct {
-    background-color: #388e3c; /* Darker green */
-    color: var(--white);
-}
-
-[data-theme="dark"] .quiz-option.incorrect {
-    background-color: #d32f2f; /* Darker red */
-    color: var(--white);
-}
+        [data-theme="dark"] .quiz-option.incorrect {
+            background-color: #d32f2f; /* Darker red */
+            color: var(--white);
+        }
 
         /* ===== Animations ===== */
         @keyframes fadeIn {
@@ -2170,14 +2374,17 @@ body {
         
         <div class="types-container">
             <div class="flip-card">
-                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                <div class="flip-card-inner"> 
+                    <div class="flip-card-front glass-card"> 
+                        <div class="type-img">
                             <img src="espress.jpg" alt="Espresso">
                         </div>
                         <div class="type-content">
                             <h3>Espresso</h3>
                         </div>
                     </div>
-                    <div class="flip-card-back glass-card"> <h3>Espresso Details</h3>
+                    <div class="flip-card-back glass-card"> 
+                        <h3>Espresso Details</h3>
                         <p><strong>Origin:</strong> Italy</p>
                         <p><strong>Caffeine:</strong> 63mg per shot</p>
                         <p><strong>Best Time:</strong> Morning or after meals</p>
@@ -2188,14 +2395,17 @@ body {
             </div>
             
             <div class="flip-card">
-                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                <div class="flip-card-inner"> 
+                    <div class="flip-card-front glass-card"> 
+                        <div class="type-img">
                             <img src="latte.jpeg" alt="Latte">
                         </div>
                         <div class="type-content">
                             <h3>Latte</h3>
                         </div>
                     </div>
-                    <div class="flip-card-back glass-card"> <h3>Latte Details</h3>
+                    <div class="flip-card-back glass-card"> 
+                        <h3>Latte Details</h3>
                         <p><strong>Origin:</strong> Italy/France</p>
                         <p><strong>Caffeine:</strong> 63mg per shot</p>
                         <p><strong>Best Time:</strong> Morning or afternoon</p>
@@ -2205,34 +2415,37 @@ body {
                 </div>
             </div>
             <div class="flip-card">
-    <div class="flip-card-inner">
-        <div class="flip-card-front glass-card">
-            <div class="type-img">
-                <img src="affogato.jpg" alt="Affogato">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front glass-card">
+                        <div class="type-img">
+                            <img src="affogato.jpg" alt="Affogato">
+                        </div>
+                        <div class="type-content">
+                            <h3>Affogato</h3>
+                        </div>
+                    </div>
+                    <div class="flip-card-back glass-card">
+                        <h3>Affogato Details</h3>
+                        <p><strong>Origin:</strong> Italy</p>
+                        <p><strong>Caffeine:</strong> 63mg per shot</p>
+                        <p><strong>Best Time:</strong> After dinner</p>
+                        <p><strong>Flavor:</strong> Sweet, creamy, with coffee bitterness</p>
+                        <p><strong>Description:</strong> A dessert coffee made by pouring a shot of hot espresso over vanilla gelato or ice cream, creating a delicious contrast of temperatures and flavors.</p>
+                    </div>
+                </div>
             </div>
-            <div class="type-content">
-                <h3>Affogato</h3>
-            </div>
-        </div>
-        <div class="flip-card-back glass-card">
-            <h3>Affogato Details</h3>
-            <p><strong>Origin:</strong> Italy</p>
-            <p><strong>Caffeine:</strong> 63mg per shot</p>
-            <p><strong>Best Time:</strong> After dinner</p>
-            <p><strong>Flavor:</strong> Sweet, creamy, with coffee bitterness</p>
-            <p><strong>Description:</strong> A dessert coffee made by pouring a shot of hot espresso over vanilla gelato or ice cream, creating a delicious contrast of temperatures and flavors.</p>
-        </div>
-    </div>
-</div>
             <div class="flip-card">
-                <div class="flip-card-inner"> <div class="flip-card-front glass-card"> <div class="type-img">
+                <div class="flip-card-inner"> 
+                    <div class="flip-card-front glass-card"> 
+                        <div class="type-img">
                             <img src="cappuccino.jpeg" alt="Cappuccino">
                         </div>
                         <div class="type-content">
                             <h3>Cappuccino</h3>
                         </div>
                     </div>
-                    <div class="flip-card-back glass-card"> <h3>Cappuccino Details</h3>
+                    <div class="flip-card-back glass-card"> 
+                        <h3>Cappuccino Details</h3>
                         <p><strong>Origin:</strong> Italy</p>
                         <p><strong>Caffeine:</strong> 63mg per shot</p>
                         <p><strong>Best Time:</strong> Morning only (Italian tradition)</p>
@@ -2279,7 +2492,7 @@ body {
             <p class="text-center">Understanding the world's most popular psychoactive substance</p>
             
             <div class="caffeine-container">
-                <div class="caffeine-text glass-card" style="padding: 2rem;">
+                <div class="caffeine-text glass-card">
                     <h3>What is Caffeine?</h3>
                     <p>Caffeine is a natural stimulant most commonly found in coffee, tea, and cacao plants. It works by stimulating the brain and central nervous system, helping you stay alert and preventing the onset of tiredness.</p>
                     
@@ -2389,10 +2602,14 @@ body {
             <p class="text-center">Get the perfect coffee recommendation based on your local weather</p>
             
             <div class="weather-suggestion glass-card" id="weather-suggestion">
-                <div class="weather-icon" id="weather-icon">
-                    <i class="fas fa-cloud-sun"></i>
+                <div class="weather-info">
+                    <div class="weather-icon" id="weather-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="weather-details">
+                        <p class="weather-text" id="weather-text">Allow location access to get a weather-based coffee recommendation</p>
+                    </div>
                 </div>
-                <p class="weather-text" id="weather-text">Allow location access to get a weather-based coffee recommendation</p>
                 <button id="weather-btn" class="btn btn-primary">Check Weather</button>
                 <div class="suggested-coffee" id="suggested-coffee"></div>
             </div>
@@ -2904,7 +3121,7 @@ const moodData = {
                 'pour-over': {
                     title: 'Pour Over Method',
                     image: 'pour.jpeg', // Changed to your local image
-                    description: 'The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that highlights the coffee\'s origin characteristics.',
+                    description: 'The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that великолепный highlights the coffee\'s origin characteristics.',
                     ratio: '1:16 coffee to water (e.g., 20g coffee to 320g water)',
                     steps: [
                         'Boil water and let it cool slightly. Rinse paper filter with hot water to remove paper taste and preheat brewer.',
@@ -3297,7 +3514,8 @@ const moodData = {
             }
 
             nextQuestionBtn.addEventListener('click', () => {
-                if (selectedOption !== null || quizQuestions[currentQuestionIndex].answeredCorrectly !== undefined) { // Allow next if an option was selected or already reviewed
+                // Ensure an option is selected before moving to the next question
+                if (selectedOption !== null) { 
                     currentQuestionIndex++;
                     loadQuestion();
                 } else {
