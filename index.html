@@ -203,7 +203,6 @@
             height: 100%;
             transition: transform 0.6s;
             transform-style: preserve-3d;
-            /* No glass-card properties here */
         }
 
         /* FIX: Rotate the inner card on hover */
@@ -779,6 +778,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
+            padding-bottom: 2rem; /* Add padding for consistency with quiz spacing */
         }
 
         .type-card {
@@ -1656,6 +1656,144 @@ body {
     margin: 1rem auto 0; /* This centers the underline */
 }
 
+/* Quiz Specific Styles */
+.coffee-quiz {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--bg-latte); /* Use a light background from your theme */
+}
+
+.quiz-question {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.quiz-option {
+    padding: 12px 20px;
+    border: 1px solid var(--secondary-light);
+    border-radius: 8px;
+    background-color: var(--glass-light);
+    color: var(--text-medium);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.quiz-option:hover {
+    background-color: rgba(188, 170, 164, 0.2); /* Lighter accent shade for hover */
+    transform: translateY(-2px);
+}
+
+.quiz-option.selected {
+    background-color: var(--primary-medium); /* Darker primary for selected */
+    color: var(--secondary-lighter);
+    border-color: var(--primary-medium);
+}
+
+.quiz-option.correct {
+    background-color: #66bb6a; /* Green for correct */
+    color: var(--white);
+    border-color: #4CAF50;
+}
+
+.quiz-option.incorrect {
+    background-color: #ef5350; /* Red for incorrect */
+    color: var(--white);
+    border-color: #f44336;
+}
+
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.quiz-feedback {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    min-height: 2rem; /* Reserve space to prevent layout shift */
+}
+
+.quiz-results {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: rgba(188, 170, 164, 0.2);
+    display: none; /* Hidden by default */
+}
+
+.quiz-results.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.quiz-results h3 {
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.quiz-score {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.quiz-score span {
+    color: var(--accent);
+}
+
+.quiz-message {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-medium);
+}
+
+/* Dark Mode Quiz Adjustments */
+[data-theme="dark"] .coffee-quiz {
+    background-color: var(--secondary-lighter); /* Darker background for quiz in dark mode */
+}
+
+[data-theme="dark"] .quiz-option {
+    background-color: var(--glass-dark);
+    color: var(--text-light);
+    border-color: var(--secondary-light);
+}
+
+[data-theme="dark"] .quiz-option:hover {
+    background-color: rgba(141, 110, 99, 0.2);
+}
+
+[data-theme="dark"] .quiz-option.selected {
+    background-color: var(--primary-light);
+    color: var(--bg-cream);
+    border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .quiz-option.correct {
+    background-color: #388e3c; /* Darker green */
+    color: var(--white);
+}
+
+[data-theme="dark"] .quiz-option.incorrect {
+    background-color: #d32f2f; /* Darker red */
+    color: var(--white);
+}
+
         /* ===== Animations ===== */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -1794,6 +1932,10 @@ body {
             .quote-text {
                 font-size: 1.3rem;
             }
+
+            .quiz-options {
+                padding: 0 1rem; /* Adjust padding for smaller screens */
+            }
         }
 
         @media (max-width: 576px) {
@@ -1836,7 +1978,7 @@ body {
                 <li><a href="#types">Types</a></li>
                 <li><a href="#chemistry">Science</a></li>
                 <li><a href="#brew">Brew</a></li>
-            </ul>
+                <li><a href="#quiz">Quiz</a></li> </ul>
             
             <button class="menu-toggle">
                 <i class="fas fa-bars"></i>
@@ -2410,7 +2552,7 @@ body {
 
     <div class="modal" id="method-modal">
         <div class="modal-content glass-card">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal">×</span>
             
             <div class="modal-header">
                 <h3 id="modal-title">Pour Over Method</h3>
@@ -2423,7 +2565,7 @@ body {
                 
                 <div class="modal-text">
                     <h4>About This Method</h4>
-                    <p id="modal-description">The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that highlights the coffee's origin characteristics.</p>
+                    <p id="modal-description">The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that великолепный highlights the coffee's origin characteristics.</p>
                     
                     <h4>Brew Ratio</h4>
                     <p id="modal-ratio">1:16 coffee to water (e.g., 20g coffee to 320g water)</p>
@@ -2513,6 +2655,32 @@ body {
     </div>
 </section>
 
+    <section class="section coffee-quiz" id="quiz">
+        <div class="container">
+            <h2 class="section-title">Test Your Coffee Knowledge!</h2>
+            <p class="text-center">How well do you know your coffee? Take this quick quiz!</p>
+            
+            <div class="glass-card" style="padding: 2rem;">
+                <div id="quiz-container">
+                    <p class="quiz-question" id="quiz-question"></p>
+                    <div class="quiz-options" id="quiz-options">
+                        </div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                    <div class="quiz-controls">
+                        <button id="prev-question-btn" class="btn btn-outline" style="display:none;">Previous</button>
+                        <button id="next-question-btn" class="btn btn-primary">Next Question</button>
+                    </div>
+                </div>
+
+                <div class="quiz-results" id="quiz-results">
+                    <h3>Quiz Complete!</h3>
+                    <p class="quiz-score">You scored: <span id="final-score">0/0</span></p>
+                    <p class="quiz-message" id="result-message"></p>
+                    <button id="restart-quiz-btn" class="btn btn-primary" style="margin-top: 1.5rem;">Restart Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="section link-cafe" id="links">
         <div class="container">
             <h2 class="section-title">Coffee Resources</h2>
@@ -2558,7 +2726,7 @@ body {
                         <li><a href="#origins">Coffee Origins</a></li>
                         <li><a href="#types">Coffee Types</a></li>
                         <li><a href="#brew">Brew Methods</a></li>
-                    </ul>
+                        <li><a href="#quiz">Coffee Quiz</a></li> </ul>
                 </div>
             </div>
             
@@ -2663,42 +2831,42 @@ const moodData = {
     'chill': {
         coffee: 'Flat White',
         quote: '"A smooth, velvety coffee to complement your relaxed state. The microfoam creates a comforting texture while the double shot provides just enough lift."',
-        song: '"Coffee" by Sylvan Esso'
+        song: '"Coffee" by Sylvan Esso"'
     },
     'focus': {
         coffee: 'Espresso',
         quote: '"Concentrated and powerful, like your focus. The intense flavor cuts through distractions while the caffeine sharpens your mind."',
-        song: '"Concentration" by Moon Taxi'
+        song: '"Concentration" by Moon Taxi"'
     },
     'energize': {
         coffee: 'Cold Brew',
         quote: '"Smooth yet potent, cold brew delivers a steady caffeine boost without acidity. Perfect for sustained energy throughout your day."',
-        song: '"Energy" by Disclosure'
+        song: '"Energy" by Disclosure"'
     },
     'creative': {
         coffee: 'Cortado',
         quote: '"The perfect balance of espresso and milk to stimulate creativity without overwhelming your senses. Just enough to get ideas flowing."',
-        song: '"Creative" by Leon Bridges'
+        song: '"Creative" by Leon Bridges"'
     },
     'social': {
         coffee: 'Café au Lait',
         quote: '"A friendly, approachable coffee that pairs perfectly with conversation. The equal parts coffee and steamed milk make it ideal for sharing."',
-        song: '"We Are Family" by Sister Sledge'
+        song: '"We Are Family" by Sister Sledge"'
     },
     'relax': {
         coffee: 'Latte',
         quote: '"Creamy and comforting, a latte is like a warm hug in a cup. The extra milk makes it smooth and easy to sip slowly."',
-        song: '"Banana Pancakes" by Jack Johnson'
+        song: '"Banana Pancakes" by Jack Johnson"'
     },
     'productive': {
         coffee: 'Americano',
         quote: '"Simple, straightforward, and effective - just like your productivity. Hot water extends the espresso for longer sipping during work sessions."',
-        song: '"Work" by Rihanna'
+        song: '"Work" by Rihanna"'
     },
     'adventurous': {
         coffee: 'Turkish Coffee',
         quote: '"Bold and unfiltered, Turkish coffee is for those seeking new experiences. The intense flavor and unique preparation make it a true adventure."',
-        song: '"Adventure of a Lifetime" by Coldplay'
+        song: '"Adventure of a Lifetime" by Coldplay"'
     }
 };
             
@@ -2735,7 +2903,7 @@ const moodData = {
             const methodData = {
                 'pour-over': {
                     title: 'Pour Over Method',
-                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    image: 'pour.jpeg', // Changed to your local image
                     description: 'The pour over method involves manually pouring hot water over coffee grounds in a filter. The water drains through the coffee and filter into a carafe or mug. This method allows for precise control over water temperature, pour rate, and brew time, resulting in a clean, nuanced cup that highlights the coffee\'s origin characteristics.',
                     ratio: '1:16 coffee to water (e.g., 20g coffee to 320g water)',
                     steps: [
@@ -2746,7 +2914,7 @@ const moodData = {
                 },
                 'french-press': {
                     title: 'French Press Method',
-                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    image: 'french.jpeg', // Changed to your local image
                     description: 'The French press, or press pot, is a full-immersion brewing method where coffee grounds steep in hot water before being separated by pressing down a metal filter. This method produces a rich, full-bodied cup with more oils and sediment than paper-filtered methods.',
                     ratio: '1:15 coffee to water (e.g., 30g coffee to 450g water)',
                     steps: [
@@ -2757,7 +2925,7 @@ const moodData = {
                 },
                 'cold-brew': {
                     title: 'Cold Brew Method',
-                    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+                    image: 'cold.jpeg', // Changed to your local image
                     description: 'Cold brew is made by steeping coarse coffee grounds in cold or room temperature water for an extended period (12-24 hours). The slow extraction produces a smooth, sweet concentrate with very low acidity that can be diluted with water or milk and served over ice or heated.',
                     ratio: '1:4 to 1:8 coffee to water for concentrate (e.g., 100g coffee to 400-800g water)',
                     steps: [
@@ -2991,9 +3159,165 @@ const moodData = {
                 weatherIcon.innerHTML = `<i class="${iconClass}"></i>`;
                 suggestedCoffee.textContent = `We recommend: ${suggestion}`;
             }
+
+            // --- Coffee Quiz Logic ---
+            const quizQuestions = [
+                {
+                    question: "Which country is credited with the discovery of coffee?",
+                    options: ["Brazil", "Ethiopia", "Colombia", "Vietnam"],
+                    answer: "Ethiopia"
+                },
+                {
+                    question: "What is the primary stimulant found in coffee?",
+                    options: ["Theobromine", "Caffeine", "Tannin", "L-Theanine"],
+                    answer: "Caffeine"
+                },
+                {
+                    question: "Which coffee drink consists of equal parts espresso, steamed milk, and milk foam?",
+                    options: ["Latte", "Americano", "Cappuccino", "Macchiato"],
+                    answer: "Cappuccino"
+                },
+                {
+                    question: "What is Kopi Luwak famous for?",
+                    options: ["Being the cheapest coffee", "Being made from civet cat droppings", "Its intense citrus flavor", "Its origin in Hawaii"],
+                    answer: "Being made from civet cat droppings"
+                },
+                {
+                    question: "What is the process of pouring hot water slowly over ground coffee in a filter called?",
+                    options: ["Espresso brewing", "French pressing", "Cold brewing", "Pour Over"],
+                    answer: "Pour Over"
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let selectedOption = null;
+
+            const quizQuestionEl = document.getElementById('quiz-question');
+            const quizOptionsEl = document.getElementById('quiz-options');
+            const quizFeedbackEl = document.getElementById('quiz-feedback');
+            const prevQuestionBtn = document.getElementById('prev-question-btn');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const quizContainer = document.getElementById('quiz-container');
+            const quizResults = document.getElementById('quiz-results');
+            const finalScoreEl = document.getElementById('final-score');
+            const resultMessageEl = document.getElementById('result-message');
+            const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+            function loadQuestion() {
+                if (currentQuestionIndex < quizQuestions.length) {
+                    const questionData = quizQuestions[currentQuestionIndex];
+                    quizQuestionEl.textContent = questionData.question;
+                    quizOptionsEl.innerHTML = ''; // Clear previous options
+                    quizFeedbackEl.textContent = ''; // Clear feedback
+
+                    selectedOption = null; // Reset selected option for new question
+
+                    questionData.options.forEach((option, index) => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.classList.add('quiz-option');
+                        optionDiv.textContent = option;
+                        optionDiv.addEventListener('click', () => selectOption(optionDiv, option));
+                        quizOptionsEl.appendChild(optionDiv);
+                    });
+
+                    // Update navigation buttons visibility
+                    prevQuestionBtn.style.display = currentQuestionIndex > 0 ? 'inline-block' : 'none';
+                    nextQuestionBtn.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next Question';
+                } else {
+                    showResults();
+                }
+            }
+
+            function selectOption(selectedDiv, selectedText) {
+                // Remove 'selected' and feedback classes from all options
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto'; // Re-enable clicks
+                });
+
+                // Add 'selected' class to the clicked option
+                selectedDiv.classList.add('selected');
+                selectedOption = selectedText;
+
+                // Check answer immediately (or wait for next button based on preference)
+                checkAnswer(selectedDiv);
+            }
+
+            function checkAnswer(selectedDiv) {
+                const correctAnswer = quizQuestions[currentQuestionIndex].answer;
+                
+                if (selectedOption === correctAnswer) {
+                    selectedDiv.classList.add('correct');
+                    quizFeedbackEl.textContent = "Correct!";
+                    if (!quizQuestions[currentQuestionIndex].answeredCorrectly) {
+                        score++;
+                        quizQuestions[currentQuestionIndex].answeredCorrectly = true; // Mark as answered correctly to prevent double scoring
+                    }
+                } else {
+                    selectedDiv.classList.add('incorrect');
+                    quizFeedbackEl.textContent = "Incorrect. The correct answer was: " + correctAnswer;
+                    // Find and highlight the correct answer
+                    Array.from(quizOptionsEl.children).forEach(opt => {
+                        if (opt.textContent === correctAnswer) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                     // Mark as answered (even if incorrect) to prevent re-scoring on revisit
+                    quizQuestions[currentQuestionIndex].answeredCorrectly = false; 
+                }
+                // Disable further clicks on options for this question
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+            }
+
+            function showResults() {
+                quizContainer.style.display = 'none';
+                quizResults.classList.add('active');
+                finalScoreEl.textContent = `${score}/${quizQuestions.length}`;
+
+                if (score === quizQuestions.length) {
+                    resultMessageEl.textContent = "Amazing! You're a true coffee connoisseur!";
+                } else if (score >= quizQuestions.length / 2) {
+                    resultMessageEl.textContent = "Good job! You know a fair bit about coffee.";
+                } else {
+                    resultMessageEl.textContent = "Keep learning! There's a whole world of coffee to explore.";
+                }
+            }
+
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                selectedOption = null;
+                quizQuestions.forEach(q => q.answeredCorrectly = false); // Reset answered status
+                quizResults.classList.remove('active');
+                quizContainer.style.display = 'block';
+                loadQuestion();
+            }
+
+            nextQuestionBtn.addEventListener('click', () => {
+                if (selectedOption !== null || quizQuestions[currentQuestionIndex].answeredCorrectly !== undefined) { // Allow next if an option was selected or already reviewed
+                    currentQuestionIndex++;
+                    loadQuestion();
+                } else {
+                    quizFeedbackEl.textContent = "Please select an option before proceeding.";
+                }
+            });
+
+            prevQuestionBtn.addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    loadQuestion();
+                }
+            });
+
+            restartQuizBtn.addEventListener('click', restartQuiz);
+
+            // Initial load of the quiz
+            loadQuestion();
            
         });
     </script>
 </body>
 </html>
-
